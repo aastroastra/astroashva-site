@@ -1,182 +1,351 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-lang="en" data-theme="white-light">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Status · AstroAshva</title>
-<meta name="description" content="Live status of AstroAshva's services.">
-<link rel="icon" href="./favicon.png">
+<meta name="description" content="Live status of every AstroAshva service: the app, our astrology engine, AshvaAI chat, PDF reports, sign-in, purchases, notifications and the website." />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#FFFFFF" />
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+<link rel="canonical" href="https://www.astroashva.com/status.html" />
+<link rel="alternate" hreflang="en" href="https://www.astroashva.com/status.html" />
+<link rel="alternate" hreflang="hi" href="https://www.astroashva.com/status.html?lang=hi" />
+<link rel="alternate" hreflang="x-default" href="https://www.astroashva.com/status.html" />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&family=Noto+Sans+Devanagari:wght@500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&family=Noto+Sans+Devanagari:wght@500;600;700&display=swap" /></noscript>
+<link rel="stylesheet" href="/site-theme.css?v=4" />
+<link rel="stylesheet" href="/pages.css?v=2" />
+<script>
+/* Theme and language before first paint, exactly as the home page: a saved
+   aa-theme wins, otherwise White · Light. site-theme.js and pages.js take over. */
+(function(){var d=document.documentElement,t,l,q;
+try{t=localStorage.getItem('aa-theme');}catch(e){}
+if(!/^(yellow|white|mono)-light$|^(yellow|mono)-dark$/.test(t||''))t='white-light';
+d.setAttribute('data-theme',t);
+try{q=new URLSearchParams(location.search).get('lang');}catch(e){}
+if(q!=='hi'&&q!=='en'){try{q=localStorage.getItem('aa-lang');}catch(e){}}
+l=q==='hi'?'hi':'en';d.setAttribute('data-lang',l);d.lang=l;})();
+</script>
+<script src="/site-theme.js" defer></script>
+<script src="/pages.js" defer></script>
 <style>
-  :root{
-    --bg:#FFFFFF; --card:#FFFFFF; --line:#ECE6D8; --fg:#1A1A1A; --muted:#8C8676;
-    --tint:#E0A015; --up:#177245; --up-bg:#E8F3EB; --slow:#9A6206; --slow-bg:#FBF0DF;
-    --down:#9A3412; --down-bg:#FBEDE6; --off:#8C8676; --off-bg:#F4F2ED;
+  :root { --status-off:var(--muted); }
+  .st-hero { display:flex; gap:14px; align-items:flex-start; margin-top:14px; }
+  .st-hero h1 { font-size:clamp(28px,5vw,44px); margin:0; }
+  .st-sub { margin:12px 0 0; color:var(--fg2); font-size:15px; line-height:1.6; }
+  .st-dot { flex:none; width:12px; height:12px; border-radius:50%; display:inline-block; background:var(--status-off); }
+  .st-hero .st-dot { width:16px; height:16px; margin-top:clamp(10px,2vw,17px); }
+  .st-dot.up { background:var(--status-good); }
+  .st-dot.degraded { background:var(--status-warn); }
+  .st-dot.down { background:var(--status-bad); }
+  .st-dot.off { background:transparent; border:2px solid var(--status-off); }
+  .st-legend { display:flex; flex-wrap:wrap; gap:8px 18px; margin:22px 0 0; padding:0; list-style:none; font-size:13px; color:var(--muted); }
+  .st-legend li { display:inline-flex; align-items:center; gap:7px; }
+  .st-legend .st-dot { width:10px; height:10px; }
+  .st-group h2 { font-family:var(--font-body); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin:38px 0 10px; font-weight:700; }
+  html[data-lang="hi"] .st-group h2 { letter-spacing:.02em; font-size:13px; }
+  .st-list { border:1px solid var(--line); border-radius:16px; background:var(--card); overflow:hidden; }
+  .st-row { display:grid; grid-template-columns:auto 1fr auto; gap:4px 12px; align-items:start; padding:16px 18px; border-top:1px solid var(--line); }
+  .st-row:first-child { border-top:none; }
+  .st-row .st-dot { margin-top:6px; }
+  .st-name { font-weight:600; font-size:15.5px; color:var(--fg); line-height:1.4; }
+  .st-blurb { font-size:13.5px; color:var(--muted); line-height:1.5; margin-top:1px; }
+  .st-facts { margin:7px 0 0; padding:0; list-style:none; font-size:13.5px; color:var(--fg2); line-height:1.55; }
+  .page .st-facts { padding-left:0; }
+  .page .st-facts li { font-size:13.5px; line-height:1.55; color:var(--fg2); }
+  .st-facts li + li { margin-top:2px; }
+  .st-meta { font-size:12px; color:var(--muted); margin-top:7px; font-variant-numeric:tabular-nums; }
+  .st-pill { font-size:11.5px; font-weight:700; letter-spacing:.04em; padding:4px 10px; border-radius:999px; white-space:nowrap; border:1px solid transparent; line-height:1.4; }
+  .st-pill.up { color:var(--status-good); background:var(--status-good-bg); }
+  .st-pill.degraded { color:var(--status-warn); background:color-mix(in srgb,var(--status-warn) 11%,var(--bg)); }
+  .st-pill.down { color:var(--status-bad); background:var(--status-bad-bg); }
+  .st-pill.off { color:var(--muted); border-color:var(--line); }
+  .st-skel { height:74px; border-top:1px solid var(--line); background:linear-gradient(90deg,var(--card),var(--soft),var(--card)); background-size:200% 100%; animation:st-sh 1.2s linear infinite; }
+  .st-skel:first-child { border-top:none; }
+  @keyframes st-sh { to { background-position:-200% 0; } }
+  @media (prefers-reduced-motion:reduce) { .st-skel { animation:none; } }
+  .st-how { margin-top:40px; }
+  .st-how h2 { margin-top:0; font-size:20px; }
+  @media (max-width:560px) {
+    .st-row { grid-template-columns:auto 1fr; padding:14px 14px; }
+    .st-row .st-pill { grid-column:2; justify-self:start; margin-top:6px; }
   }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--fg);
-    font:400 16px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    -webkit-font-smoothing:antialiased}
-  a{color:inherit}
-  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
-  header{border-bottom:1px solid var(--line);padding:20px 0}
-  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
-  .brand{font-weight:700;letter-spacing:-.01em;text-decoration:none;font-size:17px}
-  .brand span{color:var(--tint)}
-  .back{font-size:14px;color:var(--muted);text-decoration:none}
-  .back:hover{color:var(--fg)}
-
-  .banner{padding:44px 0 30px;border-bottom:1px solid var(--line)}
-  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;margin-right:10px;
-    vertical-align:middle;position:relative;top:-1px}
-  h1{font-size:clamp(24px,4.5vw,32px);margin:0 0 8px;letter-spacing:-.02em;font-weight:700}
-  .sub{color:var(--muted);font-size:14.5px;margin:0}
-
-  .group{margin-top:30px}
-  .group h2{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-    margin:0 0 10px;font-weight:600}
-  .row{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--line);
-    border-radius:10px;margin-bottom:8px;background:var(--card)}
-  .row .name{font-weight:600;font-size:15px}
-  .row .why{color:var(--muted);font-size:13px;margin-top:2px}
-  .row .mid{flex:1;min-width:0}
-  .pill{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-    padding:4px 9px;border-radius:5px;white-space:nowrap}
-  .lat{font:400 12px ui-monospace,monospace;color:var(--muted);
-    font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
-  .up{background:var(--up-bg);color:var(--up)} .degraded{background:var(--slow-bg);color:var(--slow)}
-  .down{background:var(--down-bg);color:var(--down)} .off{background:var(--off-bg);color:var(--off)}
-  .d-up{background:var(--up)} .d-degraded{background:var(--slow)}
-  .d-down{background:var(--down)} .d-off{background:var(--off)}
-
-  .note{border:1px solid var(--line);background:#FBFAF6;border-radius:10px;padding:15px 18px;
-    margin:26px 0;font-size:14px;color:var(--muted)}
-  .note b{color:var(--fg)}
-  footer{border-top:1px solid var(--line);margin-top:44px;padding:22px 0 60px;
-    font-size:13.5px;color:var(--muted)}
-  footer a{margin-right:16px;text-decoration:none}
-  footer a:hover{color:var(--fg)}
-  .skeleton{height:56px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;
-    background:linear-gradient(90deg,#FAF8F3,#F2EFE7,#FAF8F3);background-size:200% 100%;
-    animation:sh 1.2s linear infinite}
-  @keyframes sh{to{background-position:-200% 0}}
-  @media (prefers-reduced-motion:reduce){.skeleton{animation:none}}
 </style>
 </head>
 <body>
-
-<header><div class="wrap">
-  <a class="brand" href="./">Astro<span>Ashva</span></a>
-  <a class="back" href="./">Back to site</a>
-</div></header>
-
-<div class="banner"><div class="wrap">
-  <h1 id="headline"><span class="dot d-off" id="dot"></span>Checking…</h1>
-  <p class="sub" id="checked">Reading the latest health check.</p>
-</div></div>
-
-<div class="wrap">
-  <div id="groups">
-    <div class="group"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
-  </div>
-
-  <div class="note">
-    <b>How this page works.</b> Every service is checked every five minutes by a job on our own
-    servers, and this page reads the result of that check. It never runs a check itself, so opening
-    it costs our providers nothing.
-    <br><br>
-    <b>Off</b> means a feature has not launched yet, not that it is broken.
-  </div>
+<script src="/app-bar.js"></script>
+<div class="site-frame">
+<header class="site-header"><a href="/" class="site-brand"><span class="site-mark" aria-hidden="true"></span>AstroAshva</a><div class="site-controls"><nav class="site-nav" aria-label="Main"><a href="/"><span lang="en">Home</span><span lang="hi">होम</span></a><a href="/pricing/"><span lang="en">Pricing</span><span lang="hi">कीमतें</span></a></nav><div class="lang-seg" role="group" aria-label="Language"><button type="button" data-set-lang="en" aria-pressed="true">EN</button><button type="button" data-set-lang="hi" aria-pressed="false">हिं</button></div><div class="site-themes" role="group" aria-label="Theme"><button type="button" data-site-theme="yellow-light" title="Yellow · Light" aria-label="Yellow · Light" aria-pressed="false"><span class="site-chip" aria-hidden="true"><i></i></span></button><button type="button" data-site-theme="white-light" title="White · Light" aria-label="White · Light" aria-pressed="false"><span class="site-chip" aria-hidden="true"><i></i></span></button><button type="button" data-site-theme="mono-light" title="B&amp;W · Light" aria-label="B&amp;W · Light" aria-pressed="false"><span class="site-chip" aria-hidden="true"><i></i></span></button><button type="button" data-site-theme="yellow-dark" title="Yellow · Dark" aria-label="Yellow · Dark" aria-pressed="false"><span class="site-chip" aria-hidden="true"><i></i></span></button><button type="button" data-site-theme="mono-dark" title="B&amp;W · Dark" aria-label="B&amp;W · Dark" aria-pressed="false"><span class="site-chip" aria-hidden="true"><i></i></span></button></div></div></header>
+<main class="page">
+<p class="eyebrow"><span lang="en">Service status</span><span lang="hi">सेवा की स्थिति</span></p>
+<div class="st-hero" aria-live="polite">
+  <span class="st-dot off" id="st-dot" aria-hidden="true"></span>
+  <h1 id="st-head"><span lang="en">Checking services</span><span lang="hi">सेवाओं की जाँच हो रही है</span></h1>
 </div>
+<p class="st-sub" id="st-sub"><span lang="en">Reading the latest check.</span><span lang="hi">नवीनतम जाँच पढ़ी जा रही है।</span></p>
+<ul class="st-legend" aria-label="Legend">
+  <li><span class="st-dot up"></span><span lang="en">Operational</span><span lang="hi">चालू</span></li>
+  <li><span class="st-dot degraded"></span><span lang="en">Degraded: works with limits</span><span lang="hi">सीमित: सीमाओं के साथ चल रहा</span></li>
+  <li><span class="st-dot down"></span><span lang="en">Down</span><span lang="hi">बंद</span></li>
+  <li><span class="st-dot off"></span><span lang="en">Not set up yet</span><span lang="hi">अभी शुरू नहीं</span></li>
+</ul>
 
-<footer><div class="wrap">
-  <a href="./">Home</a>
-  <a href="./privacy.html">Privacy</a>
-  <a href="./terms.html">Terms</a>
-  <span>AstroAshva</span>
+<div id="st-groups">
+  <section class="st-group"><h2>&nbsp;</h2><div class="st-list"><div class="st-skel"></div><div class="st-skel"></div><div class="st-skel"></div></div></section>
+  <section class="st-group"><h2>&nbsp;</h2><div class="st-list"><div class="st-skel"></div><div class="st-skel"></div></div></section>
+</div>
+<noscript><p class="note">This page needs JavaScript to read the latest check.</p></noscript>
+
+<div class="st-how">
+<h2><span lang="en">How this page works</span><span lang="hi">यह पेज कैसे काम करता है</span></h2>
+<p><span lang="en">A job on our own servers checks every service every five minutes, mostly by looking at whether real requests in the app succeeded, and otherwise with one small test request. This page only reads the result, so opening it costs our providers nothing and shows no personal data.</span><span lang="hi">हमारे अपने सर्वर पर एक जॉब हर पाँच मिनट में हर सेवा की जाँच करता है, ज़्यादातर यह देखकर कि ऐप के असली अनुरोध सफल हुए या नहीं, वरना एक छोटे परीक्षण अनुरोध से। यह पेज केवल नतीजा पढ़ता है, इसलिए इसे खोलने से हमारे प्रदाताओं पर कोई खर्च नहीं होता और कोई निजी जानकारी नहीं दिखती।</span></p>
+<p><span lang="en"><b>Not set up yet</b> means a feature has not launched, not that it is broken. Something not working for you? Write to <a href="mailto:hello@astroashva.com">hello@astroashva.com</a>.</span><span lang="hi"><b>अभी शुरू नहीं</b> का मतलब है कि फ़ीचर अभी लॉन्च नहीं हुआ, खराब नहीं है। आपके लिए कुछ काम नहीं कर रहा? <a href="mailto:hello@astroashva.com">hello@astroashva.com</a> पर लिखें।</span></p>
+</div>
+</main>
+<footer class="site-footer"><div class="in">
+<nav aria-label="Footer"><a href="/"><span lang="en">Home</span><span lang="hi">होम</span></a><a href="/pricing/"><span lang="en">Pricing</span><span lang="hi">कीमतें</span></a><a href="/privacy.html"><span lang="en">Privacy Policy</span><span lang="hi">गोपनीयता नीति</span></a><a href="/terms.html"><span lang="en">Terms of Use</span><span lang="hi">उपयोग की शर्तें</span></a><a href="/refund-policy.html"><span lang="en">Refund policy</span><span lang="hi">रिफ़ंड नीति</span></a><a href="mailto:hello@astroashva.com"><span lang="en">Contact</span><span lang="hi">संपर्क</span></a></nav>
+<p>&copy; 2026 AstroAshva. <span lang="en">Astrology content is for guidance and entertainment, not a substitute for professional advice.</span><span lang="hi">ज्योतिष सामग्री मार्गदर्शन और मनोरंजन के लिए है, पेशेवर सलाह का विकल्प नहीं।</span></p>
 </div></footer>
-
+</div>
 <script>
 (function () {
-  // Read through our own function, never a vendor. The page has no keys and
-  // learns nothing an operator would not put on a public page.
-  var ENDPOINT = "https://gttszlununmqivrqevwv.supabase.co/functions/v1/status";
-  var WORD = { up: "Operational", degraded: "Slow", down: "Down", off: "Not launched" };
-  // Say which service, not "we have a problem".
-  // A visitor cannot act on a vague apology; they can act on "sign-in by SMS is
-  // unavailable" because they know whether they were about to sign in.
-  function headline(d) {
-    var state = d.overall;
-    if (state === "up") return "All systems normal";
-    var hit = (d.services || []).filter(function (x) { return x.state === state; });
-    var names = hit.map(function (x) { return x.label; });
-    if (!names.length) return "Checking\u2026";
-    var verb = state === "degraded" ? " is running slowly" : " is unavailable";
-    if (names.length === 1) return names[0] + verb;
-    if (names.length === 2) return names[0] + " and " + names[1] +
-      (state === "degraded" ? " are running slowly" : " are unavailable");
-    return names.length + (state === "degraded" ? " services are running slowly" : " services are unavailable");
-  }
+  'use strict';
+  // Our own function, never a vendor. It returns states, timestamps and
+  // plain-language fact codes only: no keys, hostnames or operator notes.
+  var ENDPOINT = 'https://gttszlununmqivrqevwv.supabase.co/functions/v1/status';
+  var root = document.documentElement;
+  var last = null, failed = false;
 
-  function ago(iso) {
-    if (!iso) return "not checked yet";
-    var s = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 1000));
-    if (s < 90) return s + " seconds ago";
-    var m = Math.round(s / 60);
-    if (m < 90) return m + " minute" + (m === 1 ? "" : "s") + " ago";
-    return Math.round(m / 60) + " hours ago";
-  }
+  var T = {
+    en: {
+      word: { up: 'Operational', degraded: 'Degraded', down: 'Down', off: 'Not set up' },
+      allUp: 'All services operational',
+      down: 'Not working: ', degraded: 'Working with limits: ',
+      nOfM: function (a, b) { return a + ' of ' + b + ' services are fully operational.'; },
+      notSetUp: function (n) { return n + (n === 1 ? ' is' : ' are') + ' not set up yet.'; },
+      checked: function (ago) { return 'Last checked ' + ago + ', rechecked every five minutes.'; },
+      rowChecked: function (ago) { return 'Checked ' + ago; },
+      cannot: 'Cannot reach the status service',
+      cannotSub: 'If the rest of the site works, only this page is affected. Try again in a minute.',
+      none: 'No check has run yet. Try again in a few minutes.',
+      and: ' and ', comma: ', ',
+      ago: function (s) {
+        if (s < 60) return 'just now';
+        var m = Math.round(s / 60); if (m < 60) return m + (m === 1 ? ' minute ago' : ' minutes ago');
+        var h = Math.round(m / 60); if (h < 48) return h + (h === 1 ? ' hour ago' : ' hours ago');
+        var d = Math.round(h / 24); return d + ' days ago';
+      },
+      groups: { 'App': 'App', 'Astrology': 'Astrology', 'AI and reports': 'AI and reports', 'Sign-in': 'Sign-in',
+        'Payments and credits': 'Payments and credits', 'Notifications': 'Notifications', 'Website': 'Website' },
+      route: { horoscope: 'horoscope', planets: 'planet positions', charts: 'charts', dashas: 'dashas', ashtakavarga: 'ashtakavarga',
+        panchang: 'panchang', match: 'match', numerology: 'numerology', manglik: 'manglik', kp: 'KP', lalkitab: 'Lal Kitab' },
+      svc: {},
+      fact: {
+        answered: function (f) { return 'Answered our check in ' + f.ms + ' ms.'; },
+        unreachable: 'Did not answer our last check.',
+        slow: 'Answering slowly.',
+        unknown: 'Could not be checked this time.',
+        not_setup: 'Not set up yet.',
+        own_routes: function (f, t) { return f.routes && f.routes.length ? 'Now serving ' + t.list(f.routes.map(function (r) { return t.route[r] || r; })) + ' from our own engine.' : 'Serving from our own engine.'; },
+        engine_not_serving: 'Not serving any feature right now. AstrologyAPI covers everything.',
+        engine_fallback: 'Switched on, but answers are coming from the backup provider for now.',
+        last_answer: function (f, t) { return 'Last answer to the app ' + t.agoAt(f.at) + '.'; },
+        failures: function (f) { return f.n + ' of ' + f.of + ' requests failed in the last 24 hours.'; },
+        vendor_role: 'Covers what our engine does not serve yet, and steps in if it fails.',
+        horoscope_ready: function (f, t) { return f.n + ' of ' + f.of + ' daily horoscopes ready (12 signs in English and Hindi), prepared ' + t.agoAt(f.at) + '.' + (f.n < f.of ? ' A missing one is written when it is first opened.' : ''); },
+        last_use: function (f, t) { return 'Last used ' + t.agoAt(f.at) + '.'; },
+        last_reading: function (f, t) { return 'Last reading ' + t.agoAt(f.at) + '.'; },
+        last_report: function (f, t) { return 'Last report made or opened ' + t.agoAt(f.at) + '.'; },
+        provider_off: 'Turned off in our sign-in settings.',
+        signins_7d: function (f) { return f.n + (f.n === 1 ? ' person' : ' people') + ' signed in this way in the last 7 days.'; },
+        last_signin: function (f, t) { return 'Last sign-in ' + t.agoAt(f.at) + '.'; },
+        email_limit: 'Codes go out through a basic mail sender limited to about 2 emails an hour for everyone, so a code can arrive late. Sign in with Google is quicker for now.',
+        sms_outcome: function (f, t, s) { return f.n + ' of ' + f.of + ' people sent a code in the last 14 days went on to sign in.' + (s === 'down' ? ' Please sign in with Google for now.' : ''); },
+        sms_few: 'Too few codes were sent recently to judge.',
+        store_stuck: function (f) { return f.n + (f.n === 1 ? ' purchase is' : ' purchases are') + ' waiting to be credited.'; },
+        last_purchase: function (f, t) { return 'Last purchase credited ' + t.agoAt(f.at) + '.'; },
+        reconcile: function (f, t) { return 'Automatic balance check last ran ' + t.agoAt(f.at) + '.'; },
+        push_not_setup: 'Not set up yet, so the app does not send push alerts. Nothing is broken.',
+        inbox_waiting: function (f, t) { return 'The inbox opens, but new alerts start only once push notifications are set up.' + (f.at ? ' Last alert ' + t.agoAt(f.at) + '.' : ''); },
+        last_sent: function (f, t) { return 'Last alert sent ' + t.agoAt(f.at) + '.'; }
+      },
+      list: function (a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+    },
+    hi: {
+      word: { up: 'चालू', degraded: 'सीमित', down: 'बंद', off: 'अभी शुरू नहीं' },
+      allUp: 'सभी सेवाएँ चालू हैं',
+      down: 'काम नहीं कर रहा: ', degraded: 'सीमाओं के साथ चल रहा: ',
+      nOfM: function (a, b) { return b + ' में से ' + a + ' सेवाएँ पूरी तरह चालू हैं।'; },
+      notSetUp: function (n) { return n + ' अभी शुरू नहीं हुई हैं।'; },
+      checked: function (ago) { return 'पिछली जाँच ' + ago + ', हर पाँच मिनट में दोबारा जाँच।'; },
+      rowChecked: function (ago) { return 'जाँच ' + ago; },
+      cannot: 'स्थिति सेवा तक नहीं पहुँच पा रहे',
+      cannotSub: 'अगर बाकी साइट चल रही है, तो केवल यह पेज प्रभावित है। एक मिनट बाद फिर देखें।',
+      none: 'अभी तक कोई जाँच नहीं हुई। कुछ मिनट बाद फिर देखें।',
+      ago: function (s) {
+        if (s < 60) return 'अभी';
+        var m = Math.round(s / 60); if (m < 60) return m + ' मिनट पहले';
+        var h = Math.round(m / 60); if (h < 48) return h + ' घंटे पहले';
+        var d = Math.round(h / 24); return d + ' दिन पहले';
+      },
+      groups: { 'App': 'ऐप', 'Astrology': 'ज्योतिष', 'AI and reports': 'AI और रिपोर्ट', 'Sign-in': 'साइन इन',
+        'Payments and credits': 'भुगतान और क्रेडिट', 'Notifications': 'सूचनाएँ', 'Website': 'वेबसाइट' },
+      route: { horoscope: 'राशिफल', planets: 'ग्रह स्थिति', charts: 'चार्ट', dashas: 'दशा', ashtakavarga: 'अष्टकवर्ग',
+        panchang: 'पंचांग', match: 'मिलान', numerology: 'अंक ज्योतिष', manglik: 'मांगलिक', kp: 'KP', lalkitab: 'लाल किताब' },
+      svc: {
+        app_backend: ['ऐप बैकएंड', 'खाते, सहेजी कुंडलियाँ और ऐप डेटा'],
+        own_engine: ['हमारा ज्योतिष इंजन', 'एस्ट्रोअश्व द्वारा खुद गणना किए गए चार्ट और राशिफल'],
+        astrology_vendor: ['AstrologyAPI (बैकअप प्रदाता)', 'चार्ट, पंचांग, मिलान और रिपोर्ट जो हमारा इंजन अभी नहीं देता'],
+        horoscope_prep: ['दैनिक राशिफल की तैयारी', 'अगले दिन का राशिफल हर सुबह पहले से तैयार'],
+        ai_chat: ['AshvaAI चैट', 'चैट के उत्तर और "यह भाग समझाएँ"'],
+        ai_fallback: ['AI बैकअप', 'मुख्य AI मॉडल विफल हो तो काम संभालता है'],
+        palm_face: ['हस्तरेखा और चेहरा पठन', 'आपकी हथेली या चेहरे की फ़ोटो से रीडिंग'],
+        pdf_reports: ['PDF रिपोर्ट', 'कुंडली, मिलान और अंक ज्योतिष PDF'],
+        voice: ['आवाज़', 'बोलकर सुनाए गए उत्तर'],
+        signin_google: ['Google से साइन इन', 'अपने Google खाते से एक टैप में साइन इन'],
+        signin_email: ['ईमेल साइन-इन कोड', 'आपके ईमेल पर भेजा गया एक बार का कोड'],
+        sms: ['फ़ोन SMS कोड', 'SMS से भेजा गया एक बार का कोड'],
+        store_purchases: ['Google Play और Apple खरीद', 'ऐप में क्रेडिट खरीदना'],
+        credits: ['क्रेडिट बैलेंस', 'आपका बैलेंस, रोके गए क्रेडिट और अपने आप वापसी'],
+        payments: ['वॉलेट टॉप-अप', 'ज्योतिषी कॉल के वॉलेट में पैसे जोड़ना'],
+        calling: ['ज्योतिषी कॉल', 'लाइव वॉइस परामर्श'],
+        push: ['पुश सूचनाएँ', 'आपके फ़ोन की लॉक स्क्रीन पर अलर्ट'],
+        inbox: ['ऐप के अंदर सूचनाएँ', 'ऐप के अंदर अलर्ट की सूची'],
+        website: ['वेबसाइट', 'www.astroashva.com'],
+        admin: ['एडमिन कंसोल', 'सहायता और सामग्री के लिए हमारी टीम का कंसोल']
+      },
+      fact: {
+        answered: function (f) { return 'हमारी जाँच का उत्तर ' + f.ms + ' ms में दिया।'; },
+        unreachable: 'हमारी पिछली जाँच का उत्तर नहीं दिया।',
+        slow: 'धीमे उत्तर दे रहा है।',
+        unknown: 'इस बार जाँच नहीं हो सकी।',
+        not_setup: 'अभी शुरू नहीं हुआ है।',
+        own_routes: function (f, t) { return f.routes && f.routes.length ? t.list(f.routes.map(function (r) { return t.route[r] || r; })) + ' अब हमारे अपने इंजन से।' : 'हमारे अपने इंजन से।'; },
+        engine_not_serving: 'अभी कोई फ़ीचर नहीं दे रहा। सब कुछ AstrologyAPI से।',
+        engine_fallback: 'चालू है, पर अभी उत्तर बैकअप प्रदाता से आ रहे हैं।',
+        last_answer: function (f, t) { return 'ऐप को पिछला उत्तर ' + t.agoAt(f.at) + '।'; },
+        failures: function (f) { return 'पिछले 24 घंटों में ' + f.of + ' में से ' + f.n + ' अनुरोध विफल।'; },
+        vendor_role: 'जो हमारा इंजन अभी नहीं देता वह देता है, और इंजन विफल हो तो काम संभालता है।',
+        horoscope_ready: function (f, t) { return f.of + ' में से ' + f.n + ' दैनिक राशिफल तैयार (12 राशियाँ, अंग्रेज़ी और हिंदी), ' + t.agoAt(f.at) + ' बने।' + (f.n < f.of ? ' बाकी राशिफल पहली बार खुलने पर बनता है।' : ''); },
+        last_use: function (f, t) { return 'पिछला उपयोग ' + t.agoAt(f.at) + '।'; },
+        last_reading: function (f, t) { return 'पिछली रीडिंग ' + t.agoAt(f.at) + '।'; },
+        last_report: function (f, t) { return 'पिछली रिपोर्ट ' + t.agoAt(f.at) + ' बनी या खुली।'; },
+        provider_off: 'हमारी साइन-इन सेटिंग में बंद है।',
+        signins_7d: function (f) { return 'पिछले 7 दिनों में ' + f.n + ' लोगों ने इस तरह साइन इन किया।'; },
+        last_signin: function (f, t) { return 'पिछला साइन-इन ' + t.agoAt(f.at) + '।'; },
+        email_limit: 'कोड एक साधारण मेल सेवा से जाते हैं जो सबके लिए मिलाकर लगभग 2 ईमेल प्रति घंटा भेजती है, इसलिए कोड देर से आ सकता है। अभी Google से साइन इन तेज़ है।',
+        sms_outcome: function (f, t, s) { return 'पिछले 14 दिनों में जिन ' + f.of + ' लोगों को कोड भेजा गया, उनमें से ' + f.n + ' साइन इन कर पाए।' + (s === 'down' ? ' अभी कृपया Google से साइन इन करें।' : ''); },
+        sms_few: 'हाल में इतने कम कोड भेजे गए कि अभी आकलन नहीं हो सकता।',
+        store_stuck: function (f) { return f.n + ' खरीद क्रेडिट होने की प्रतीक्षा में।'; },
+        last_purchase: function (f, t) { return 'पिछली खरीद ' + t.agoAt(f.at) + ' क्रेडिट हुई।'; },
+        reconcile: function (f, t) { return 'बैलेंस की अपने आप होने वाली जाँच पिछली बार ' + t.agoAt(f.at) + ' चली।'; },
+        push_not_setup: 'अभी शुरू नहीं हुआ, इसलिए ऐप पुश अलर्ट नहीं भेजता। कुछ खराब नहीं है।',
+        inbox_waiting: function (f, t) { return 'इनबॉक्स खुलता है, पर नए अलर्ट पुश सूचनाएँ शुरू होने के बाद ही आएँगे।' + (f.at ? ' पिछला अलर्ट ' + t.agoAt(f.at) + '।' : ''); },
+        last_sent: function (f, t) { return 'पिछला अलर्ट ' + t.agoAt(f.at) + ' भेजा गया।'; }
+      },
+      list: function (a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' और ' + a[a.length - 1]; }
+    }
+  };
+  Object.keys(T).forEach(function (k) {
+    T[k].agoAt = function (iso) {
+      if (!iso) return '';
+      return T[k].ago(Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000));
+    };
+  });
 
-  function render(d) {
-    var overall = d.overall || "off";
-    document.getElementById("dot").className = "dot d-" + overall;
-    document.getElementById("headline").innerHTML =
-      '<span class="dot d-' + overall + '"></span>' + headline(d);
-    var live = (d.services || []).filter(function (x) { return x.state === "up"; }).length;
-    var counted = (d.services || []).filter(function (x) { return x.state !== "off"; }).length;
-    document.getElementById("checked").textContent =
-      (d.overall === "up"
-        ? "Last checked " + ago(d.checked_at) + "."
-        : live + " of " + counted + " services are working normally. Last checked " + ago(d.checked_at) + ".") +
-      " Rechecked every five minutes.";
-
-    var groups = {}, order = [];
-    (d.services || []).forEach(function (s) {
-      if (!groups[s.group_name]) { groups[s.group_name] = []; order.push(s.group_name); }
-      groups[s.group_name].push(s);
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
+  }
+  function lang() { return root.dataset.lang === 'hi' ? 'hi' : 'en'; }
+  function state(s) { return s === 'up' || s === 'degraded' || s === 'down' ? s : 'off'; }
+  function label(t, s) { var h = t.svc[s.service]; return h ? h[0] : s.label; }
+  function blurb(t, s) { var h = t.svc[s.service]; return h ? h[1] : (s.blurb || ''); }
+  function fact(t, f, st) {
+    var x = t.fact[f && f.code];
+    if (!x) return '';
+    return typeof x === 'function' ? x(f, t, st) : x;
+  }
 
-    var html = order.map(function (g) {
-      return '<div class="group"><h2>' + g + "</h2>" + groups[g].map(function (s) {
-        var lat = s.state === "up" || s.state === "degraded" ? (s.latency_ms ? s.latency_ms + " ms" : "") : "";
-        return '<div class="row">' +
-          '<span class="dot d-' + s.state + '"></span>' +
-          '<div class="mid"><div class="name">' + s.label + "</div>" +
-          '<div class="why">' + (s.blurb || "") + "</div></div>" +
-          '<span class="lat">' + lat + "</span>" +
-          '<span class="pill ' + s.state + '">' + (WORD[s.state] || s.state) + "</span>" +
-          "</div>";
-      }).join("") + "</div>";
-    }).join("");
+  function render() {
+    var t = T[lang()];
+    var head = document.getElementById('st-head');
+    var sub = document.getElementById('st-sub');
+    var dot = document.getElementById('st-dot');
+    var groups = document.getElementById('st-groups');
+    if (failed && !last) {
+      dot.className = 'st-dot down';
+      head.textContent = t.cannot;
+      sub.textContent = t.cannotSub;
+      groups.innerHTML = '';
+      return;
+    }
+    if (!last) return;
+    var rows = (last.services || []).slice().sort(function (a, b) {
+      return (a.sort_order || 100) - (b.sort_order || 100);
+    });
+    if (!rows.length) { head.textContent = t.allUp; sub.textContent = t.none; groups.innerHTML = ''; return; }
 
-    document.getElementById("groups").innerHTML = html ||
-      '<div class="note">No check has run yet. Try again in a few minutes.</div>';
+    var live = rows.filter(function (r) { return state(r.state) !== 'off'; });
+    var down = live.filter(function (r) { return state(r.state) === 'down'; });
+    var limited = live.filter(function (r) { return state(r.state) === 'degraded'; });
+    var up = live.filter(function (r) { return state(r.state) === 'up'; });
+    var overall = down.length ? 'down' : limited.length ? 'degraded' : 'up';
+    dot.className = 'st-dot ' + overall;
+    var names = function (a) { return t.list(a.map(function (r) { return label(t, r); })); };
+    head.textContent = overall === 'up' ? t.allUp
+      : overall === 'down' ? t.down + names(down) : t.degraded + names(limited);
+    var parts = [];
+    if (overall !== 'up') {
+      parts.push(t.nOfM(up.length, live.length));
+      if (overall === 'down' && limited.length) parts.push(t.degraded + names(limited) + (lang() === 'hi' ? '।' : '.'));
+    }
+    var offN = rows.length - live.length;
+    if (offN) parts.push(t.notSetUp(offN));
+    parts.push(t.checked(t.agoAt(last.checked_at)));
+    sub.textContent = parts.join(' ');
+
+    var order = [], byGroup = {};
+    rows.forEach(function (r) {
+      var g = r.group_name || '';
+      if (!byGroup[g]) { byGroup[g] = []; order.push(g); }
+      byGroup[g].push(r);
+    });
+    groups.innerHTML = order.map(function (g) {
+      return '<section class="st-group"><h2>' + esc(t.groups[g] || g) + '</h2><div class="st-list">' +
+        byGroup[g].map(function (r) {
+          var st = state(r.state);
+          var facts = (r.detail || []).map(function (f) { return fact(t, f, st); }).filter(Boolean);
+          return '<div class="st-row">' +
+            '<span class="st-dot ' + st + '" aria-hidden="true"></span>' +
+            '<div><div class="st-name">' + esc(label(t, r)) + '</div>' +
+            '<div class="st-blurb">' + esc(blurb(t, r)) + '</div>' +
+            (facts.length ? '<ul class="st-facts">' + facts.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '') +
+            '<div class="st-meta">' + esc(t.rowChecked(t.agoAt(r.checked_at))) + '</div></div>' +
+            '<span class="st-pill ' + st + '">' + esc(t.word[st]) + '</span>' +
+            '</div>';
+        }).join('') + '</div></section>';
+    }).join('');
   }
 
   function load() {
-    fetch(ENDPOINT, { cache: "no-store" })
-      .then(function (r) { return r.json(); })
-      .then(render)
-      .catch(function () {
-        document.getElementById("headline").innerHTML =
-          '<span class="dot d-down"></span>Cannot reach the status service';
-        document.getElementById("checked").textContent =
-          "If the rest of the site works, this page is the only thing affected.";
-        document.getElementById("groups").innerHTML = "";
-      });
+    fetch(ENDPOINT, { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (d) { last = d; failed = false; render(); })
+      .catch(function () { failed = true; render(); });
   }
 
+  // Re-render in the other language when the EN / हिं switch changes it.
+  new MutationObserver(render).observe(root, { attributes: true, attributeFilter: ['data-lang'] });
   load();
   setInterval(load, 60000);
+  // Keep "x minutes ago" honest between fetches.
+  setInterval(render, 30000);
 })();
 </script>
 </body>
